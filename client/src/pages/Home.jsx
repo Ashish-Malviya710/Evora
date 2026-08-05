@@ -275,22 +275,6 @@ const Home = () => {
                 </div>
             )}
 
-            {/* Footer */}
-            <footer className="mt-auto pt-16 pb-8 border-t border-gray-200 dark:border-dark-500 text-center">
-                <div className="flex justify-center items-center gap-2 mb-3">
-                    <FaTicketAlt className="text-primary-600 text-2xl" />
-                    <span className="text-xl font-black text-gray-900 dark:text-white">Evora</span>
-                </div>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mb-3 max-w-md mx-auto">
-                    The ultimate event booking and management ecosystem for organizers and attendees.
-                </p>
-                <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 mb-3">
-                    Developed & Managed by Ashish Kumar
-                </p>
-                <div className="text-xs text-gray-400 font-medium uppercase tracking-wider">
-                    &copy; {new Date().getFullYear()} Evora Platform. All rights reserved.
-                </div>
-            </footer>
         </div>
     );
 };
