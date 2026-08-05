@@ -28,9 +28,26 @@ const OrganizerDashboard = () => {
 
     useEffect(() => {
         if (!user || user.role !== 'organizer') { navigate('/login'); return; }
-        fetchData();
-        fetchOrganizerBookings();
+        fetchAllData();
     }, [user, navigate]);
+
+    const fetchAllData = async () => {
+        try {
+            const [analyticsRes, eventsRes, bookingsRes] = await Promise.all([
+                api.get('/analytics/organizer'),
+                api.get('/events/dashboard/my'),
+                api.get('/bookings/organizer')
+            ]);
+            setAnalytics(analyticsRes.data);
+            setEvents(eventsRes.data || []);
+            setAllBookings(bookingsRes.data || []);
+        } catch (error) {
+            console.error('Error fetching organizer data', error);
+        } finally {
+            setLoading(false);
+            setFetchingBookings(false);
+        }
+    };
 
     const fetchData = async () => {
         try {
@@ -42,7 +59,7 @@ const OrganizerDashboard = () => {
             setEvents(eventsRes.data || []);
         } catch (error) {
             console.error('Error fetching organizer data', error);
-        } finally { setLoading(false); }
+        }
     };
 
     const fetchOrganizerBookings = async () => {

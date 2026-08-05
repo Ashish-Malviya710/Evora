@@ -312,8 +312,7 @@ exports.verifyTicket = async (req, res) => {
         const { ticketId } = req.body;
         const booking = await Booking.findOne({ ticketId })
             .populate('userId', 'name email')
-            .populate('eventId', 'title date location')
-            .lean();
+            .populate('eventId', 'title date location');
 
         if (!booking) {
             return res.status(404).json({ status: 'invalid', message: 'Invalid ticket' });
@@ -387,13 +386,17 @@ exports.getMyBookings = async (req, res) => {
     }
 };
 
-// Get bookings for organizer's events
+// Get bookings for organizer's events (optimized projections)
 exports.getOrganizerBookings = async (req, res) => {
     try {
-        const events = await Event.find({ createdBy: req.user.id }).select('_id');
+        const events = await Event.find({ createdBy: req.user.id }).select('_id').lean();
         const eventIds = events.map(e => e._id);
         const bookings = await Booking.find({ eventId: { $in: eventIds } })
-            .populate('eventId').populate('userId', 'name email').sort({ createdAt: -1 }).lean();
+            .select('userId eventId status paymentStatus amount ticketId seatNumber checkedIn checkedInAt rejectionReason bookedAt createdAt paymentScreenshot')
+            .populate('eventId', 'title category date location ticketPrice status')
+            .populate('userId', 'name email')
+            .sort({ createdAt: -1 })
+            .lean();
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });

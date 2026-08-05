@@ -3,6 +3,7 @@ const http = require('http');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const compression = require('compression');
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -30,13 +31,8 @@ initSocket(server);
 // Middleware
 app.use(cors());
 app.use(helmet({ crossOriginResourcePolicy: false }));
+app.use(compression()); // Gzip compress all responses — 60-80% payload reduction
 app.use(express.json({ limit: '10mb' }));
-
-// Optimize API response speed headers
-app.use((req, res, next) => {
-    res.setHeader('X-Response-Time-Optimized', 'true');
-    next();
-});
 
 // Routes
 app.use('/api/auth', authRoutes);

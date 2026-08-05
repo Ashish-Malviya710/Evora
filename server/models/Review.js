@@ -10,5 +10,6 @@ const reviewSchema = new mongoose.Schema({
 
 // One review per user per event
 reviewSchema.index({ userId: 1, eventId: 1 }, { unique: true });
+reviewSchema.index({ eventId: 1, isModerated: 1 });
 
 module.exports = mongoose.model('Review', reviewSchema);

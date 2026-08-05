@@ -309,7 +309,10 @@ exports.aiSearchEvents = async (req, res) => {
     try {
         const queryStr = (req.body.query || req.query.query || '').trim();
         if (!queryStr) {
-            const all = await Event.find({ status: 'published' }).sort({ date: 1 }).lean();
+            const all = await Event.find({ status: 'published' })
+                .select('title subtitle date startTime endTime location category eventType totalSeats availableSeats ticketType ticketPrice status image banner thumbnail tags createdBy')
+                .populate('createdBy', 'name email')
+                .sort({ date: 1 }).lean();
             return res.json({ events: all, parsedIntent: {}, summary: 'Showing all active events' });
         }
 
@@ -350,7 +353,10 @@ exports.aiSearchEvents = async (req, res) => {
             ];
         }
 
-        const matchedEvents = await Event.find(mongoQuery).sort({ date: 1 }).lean();
+        const matchedEvents = await Event.find(mongoQuery)
+            .select('title subtitle date startTime endTime location category eventType totalSeats availableSeats ticketType ticketPrice status image banner thumbnail tags createdBy')
+            .populate('createdBy', 'name email')
+            .sort({ date: 1 }).lean();
 
         let aiSummary = `AI Filtered ${matchedEvents.length} event(s) matching "${queryStr}"`;
         try {

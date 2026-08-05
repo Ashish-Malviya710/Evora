@@ -15,10 +15,18 @@ const Home = () => {
     const [aiSearchSummary, setAiSearchSummary] = useState('');
     const [isAiSearching, setIsAiSearching] = useState(false);
 
+    const isInitialMount = React.useRef(true);
+
     useEffect(() => {
+        // Instant fetch on initial mount, debounced on subsequent search changes
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            fetchEvents();
+            return;
+        }
         const timeoutId = setTimeout(() => {
             fetchEvents();
-        }, 400); // 400ms debounce
+        }, 400); // 400ms debounce only for user typing
         return () => clearTimeout(timeoutId);
     }, [search]);
 

@@ -2,9 +2,10 @@ const Notification = require('../models/Notification');
 
 exports.getNotifications = async (req, res) => {
     try {
+        // Single query — calculate unread count from fetched results instead of separate countDocuments
         const notifications = await Notification.find({ userId: req.user.id })
             .sort({ createdAt: -1 }).limit(50).lean();
-        const unreadCount = await Notification.countDocuments({ userId: req.user.id, read: false });
+        const unreadCount = notifications.filter(n => !n.read).length;
         res.json({ notifications, unreadCount });
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });

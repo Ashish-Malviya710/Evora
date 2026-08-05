@@ -34,7 +34,21 @@ const Wishlist = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-20 text-xl font-semibold dark:text-white">Loading wishlist...</div>;
+    if (loading) {
+        return (
+            <div className="max-w-6xl mx-auto space-y-8 animate-pulse">
+                <div className="flex items-center justify-between">
+                    <div className="h-10 w-64 bg-gray-200 dark:bg-dark-600 rounded-xl"></div>
+                    <div className="h-8 w-20 bg-gray-200 dark:bg-dark-600 rounded-full"></div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="h-72 bg-gray-200 dark:bg-dark-600 rounded-2xl"></div>
+                    ))}
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="max-w-6xl mx-auto">

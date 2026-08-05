@@ -5,8 +5,8 @@ const jwt = require('jsonwebtoken');
 const { sendOTPEmail } = require('../utils/email');
 const { generateOTP } = require('../utils/helpers');
 
-const generateToken = (id, role) => {
-    return jwt.sign({ id, role }, process.env.JWT_SECRET, { expiresIn: '24h' });
+const generateToken = (id, role, name, email) => {
+    return jwt.sign({ id, role, name, email }, process.env.JWT_SECRET, { expiresIn: '24h' });
 };
 
 exports.register = async (req, res) => {
@@ -65,7 +65,7 @@ exports.login = async (req, res) => {
             email: user.email,
             role: user.role,
             profilePicture: user.profilePicture,
-            token: generateToken(user.id, user.role)
+            token: generateToken(user.id, user.role, user.name, user.email)
         });
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
@@ -90,7 +90,7 @@ exports.verifyOTP = async (req, res) => {
             email: user.email,
             role: user.role,
             profilePicture: user.profilePicture,
-            token: generateToken(user.id, user.role)
+            token: generateToken(user.id, user.role, user.name, user.email)
         });
     } catch (error) {
         res.status(500).json({ message: 'Server Error' });

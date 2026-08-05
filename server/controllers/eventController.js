@@ -9,7 +9,11 @@ exports.getEvents = async (req, res) => {
         if (req.query.category) filters.category = req.query.category;
         if (req.query.search) filters.title = { $regex: req.query.search, $options: 'i' };
 
-        const allEvents = await Event.find(filters).populate('createdBy', 'name email').sort({ date: 1 }).lean();
+        const allEvents = await Event.find(filters)
+            .select('title subtitle date startTime endTime location category eventType totalSeats availableSeats ticketType ticketPrice status createdBy image banner thumbnail tags')
+            .populate('createdBy', 'name email')
+            .sort({ date: 1 })
+            .lean();
 
         // Filter out events that completed more than 2 hours ago
         const now = new Date();

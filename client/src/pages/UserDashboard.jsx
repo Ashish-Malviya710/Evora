@@ -81,8 +81,18 @@ const UserDashboard = () => {
 
     if (loading) {
         return (
-            <div className="flex items-center justify-center min-h-[60vh]">
-                <div className="animate-pulse text-xl font-semibold text-gray-500 dark:text-gray-400">Loading your tickets...</div>
+            <div className="max-w-6xl mx-auto space-y-8 animate-pulse">
+                <div className="h-32 bg-gray-200 dark:bg-dark-600 rounded-3xl"></div>
+                <div className="flex gap-3">
+                    {[1, 2, 3, 4].map(i => (
+                        <div key={i} className="h-10 w-24 bg-gray-200 dark:bg-dark-600 rounded-xl"></div>
+                    ))}
+                </div>
+                <div className="space-y-4">
+                    {[1, 2, 3].map(i => (
+                        <div key={i} className="h-28 bg-gray-200 dark:bg-dark-600 rounded-2xl"></div>
+                    ))}
+                </div>
             </div>
         );
     }

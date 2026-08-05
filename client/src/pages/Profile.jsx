@@ -32,7 +32,13 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const { data } = await api.get('/auth/profile');
+            // Fetch profile and bookings in parallel instead of sequentially
+            const [profileRes, bookingsRes] = await Promise.all([
+                api.get('/auth/profile'),
+                api.get('/bookings/my')
+            ]);
+
+            const data = profileRes.data;
             setProfile(data);
             setForm({
                 name: data.name || '',
@@ -42,8 +48,6 @@ const Profile = () => {
                 profilePicture: data.profilePicture || ''
             });
 
-            // Fetch user bookings for stats calculation
-            const bookingsRes = await api.get('/bookings/my');
             const userBookings = bookingsRes.data || [];
             const now = new Date();
 
