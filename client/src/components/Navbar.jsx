@@ -66,8 +66,9 @@ const Navbar = () => {
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 <div className="flex justify-between items-center h-16">
                     {/* Brand */}
-                    <Link to="/" className="text-xl sm:text-2xl font-black flex items-center gap-2 tracking-tight shrink-0">
-                        <FaTicketAlt className="text-primary-500" /> Evora
+                    <Link to="/" className="text-xl sm:text-2xl font-black flex items-center gap-2.5 tracking-tight shrink-0 group">
+                        <img src="/logo.png" alt="Evora Logo" className="w-8 h-8 object-contain transition-transform group-hover:scale-110 drop-shadow" />
+                        <span className="text-transparent bg-clip-text bg-gradient-to-r from-white via-indigo-100 to-indigo-300">Evora</span>
                     </Link>
 
                     {/* Desktop Right Menu */}

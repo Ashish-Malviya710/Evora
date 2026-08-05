@@ -59,7 +59,8 @@ const AIAssistant = ({ eventId }) => {
                         {/* Header */}
                         <div className="bg-gradient-to-r from-primary-600 to-indigo-600 p-4 text-white flex items-center justify-between">
                             <div className="flex items-center gap-2 font-bold">
-                                <FaRobot className="text-xl" /> Evora AI Assistant
+                                <img src="/logo.png" alt="Evora AI" className="w-6 h-6 object-contain" />
+                                <span>Evora AI Assistant</span>
                             </div>
                             <button onClick={() => setIsOpen(false)} className="hover:opacity-80 p-1"><FaTimes /></button>
                         </div>
