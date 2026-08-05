@@ -45,20 +45,30 @@ const AdminDashboard = () => {
 
     const fetchData = async () => {
         try {
-            const [analyticsRes, eventsRes, bookingsRes, usersRes, reviewsRes] = await Promise.all([
-                api.get('/analytics/admin'),
-                api.get('/events/admin/all'),
-                api.get('/bookings/my'),
-                api.get('/auth/users'),
-                api.get('/reviews/admin/all')
-            ]);
-            setAnalytics(analyticsRes.data);
-            setEvents(eventsRes.data || []);
-            setBookings(bookingsRes.data || []);
-            setOrganizers((usersRes.data || []).filter(u => u.role === 'organizer'));
-            setReviews(reviewsRes.data || []);
+            // Progressive non-blocking fetch for instant UI rendering
+            const eventsPromise = api.get('/events/admin/all').then(res => {
+                setEvents(res.data || []);
+            });
+
+            const analyticsPromise = api.get('/analytics/admin').then(res => {
+                setAnalytics(res.data);
+            });
+
+            const bookingsPromise = api.get('/bookings/my').then(res => {
+                setBookings(res.data || []);
+            });
+
+            const usersPromise = api.get('/auth/users').then(res => {
+                setOrganizers((res.data || []).filter(u => u.role === 'organizer'));
+            });
+
+            const reviewsPromise = api.get('/reviews/admin/all').then(res => {
+                setReviews(res.data || []);
+            });
+
+            await Promise.allSettled([eventsPromise, analyticsPromise, bookingsPromise, usersPromise, reviewsPromise]);
         } catch (error) {
-            toast.error('Error fetching admin data');
+            toast.error('Error loading dashboard data');
         } finally {
             setLoading(false);
         }
@@ -132,7 +142,24 @@ const AdminDashboard = () => {
         }
     };
 
-    if (loading) return <div className="text-center py-20 text-xl font-semibold dark:text-white">Loading admin control center...</div>;
+    if (loading) {
+        return (
+            <div className="max-w-7xl mx-auto space-y-8 animate-pulse">
+                <div className="h-28 bg-gray-200 dark:bg-dark-600 rounded-3xl"></div>
+                <div className="flex gap-3">
+                    {[1, 2, 3, 4, 5].map(i => (
+                        <div key={i} className="h-10 w-28 bg-gray-200 dark:bg-dark-600 rounded-xl"></div>
+                    ))}
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-6 gap-4">
+                    {[1, 2, 3, 4, 5, 6].map(i => (
+                        <div key={i} className="h-24 bg-gray-200 dark:bg-dark-600 rounded-2xl"></div>
+                    ))}
+                </div>
+                <div className="h-96 bg-gray-200 dark:bg-dark-600 rounded-3xl"></div>
+            </div>
+        );
+    }
 
     // High-Contrast Dark Mode Chart Configuration
     const chartOptions = {

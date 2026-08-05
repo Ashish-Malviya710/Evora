@@ -171,10 +171,13 @@ exports.getWishlist = async (req, res) => {
     }
 };
 
-// Admin: list all users
+// Admin: list all users (optimized selection)
 exports.getUsers = async (req, res) => {
     try {
-        const users = await User.find().select('-password').sort({ createdAt: -1 }).lean();
+        const users = await User.find()
+            .select('name email role organizerStatus organizerCompany createdAt phone profilePicture')
+            .sort({ createdAt: -1 })
+            .lean();
         res.json(users);
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });

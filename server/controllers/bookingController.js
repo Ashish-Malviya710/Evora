@@ -363,8 +363,24 @@ exports.getTicket = async (req, res) => {
 exports.getMyBookings = async (req, res) => {
     try {
         const bookings = req.user.role === 'admin'
-            ? await Booking.find().populate({ path: 'eventId', populate: { path: 'createdBy', select: 'name email' } }).populate('userId', 'name email').sort({ createdAt: -1 }).lean()
-            : await Booking.find({ userId: req.user.id }).populate({ path: 'eventId', populate: { path: 'createdBy', select: 'name email' } }).sort({ createdAt: -1 }).lean();
+            ? await Booking.find()
+                .select('userId eventId status paymentStatus amount ticketId seatNumber checkedIn checkedInAt rejectionReason bookedAt createdAt paymentScreenshot')
+                .populate({ 
+                    path: 'eventId', 
+                    select: 'title category date location ticketPrice status createdBy',
+                    populate: { path: 'createdBy', select: 'name email' } 
+                })
+                .populate('userId', 'name email')
+                .sort({ createdAt: -1 })
+                .lean()
+            : await Booking.find({ userId: req.user.id })
+                .populate({ 
+                    path: 'eventId', 
+                    select: 'title category date location ticketPrice status createdBy',
+                    populate: { path: 'createdBy', select: 'name email' } 
+                })
+                .sort({ createdAt: -1 })
+                .lean();
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });

@@ -25,10 +25,14 @@ exports.getEvents = async (req, res) => {
     }
 };
 
-// Admin: get ALL events regardless of status
+// Admin: get ALL events regardless of status (optimized summary field selection)
 exports.getAllEvents = async (req, res) => {
     try {
-        const events = await Event.find().populate('createdBy', 'name email').sort({ createdAt: -1 }).lean();
+        const events = await Event.find()
+            .select('title subtitle date startTime endTime location category eventType totalSeats availableSeats ticketType ticketPrice upiId status createdBy organizer image banner thumbnail createdAt')
+            .populate('createdBy', 'name email')
+            .sort({ createdAt: -1 })
+            .lean();
         res.json(events);
     } catch (error) {
         res.status(500).json({ message: 'Server Error', error: error.message });
