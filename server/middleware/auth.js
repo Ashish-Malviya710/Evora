@@ -28,4 +28,26 @@ const admin = (req, res, next) => {
     }
 };
 
-module.exports = { protect, admin };
+// Flexible RBAC middleware — accepts any number of allowed roles
+const authorize = (...roles) => {
+    return (req, res, next) => {
+        if (!req.user || !roles.includes(req.user.role)) {
+            return res.status(403).json({ message: `Access denied. Required role: ${roles.join(' or ')}` });
+        }
+        next();
+    };
+};
+
+const optionalAuth = async (req, res, next) => {
+    let token = req.headers.authorization;
+    if (token && token.startsWith('Bearer')) {
+        try {
+            token = token.split(' ')[1];
+            const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            req.user = await User.findById(decoded.id).select('-password');
+        } catch (error) {}
+    }
+    next();
+};
+
+module.exports = { protect, admin, authorize, optionalAuth };
