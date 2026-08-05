@@ -5,8 +5,8 @@ const Footer = () => {
     return (
         <footer className="mt-auto py-10 bg-white dark:bg-dark-900 border-t border-gray-200 dark:border-dark-700 text-center transition-colors">
             <div className="container mx-auto px-4 flex flex-col items-center gap-3">
-                <Link to="/" className="flex items-center gap-3 group">
-                    <img src="/logo.png" alt="Evora Logo" className="w-12 h-12 sm:w-14 sm:h-14 object-contain filter drop-shadow-md transition-transform group-hover:scale-105" />
+                <Link to="/" className="flex items-center gap-1 group">
+                    <img src="/logo.png" alt="Evora Logo" className="w-12 h-12 sm:w-14 sm:h-14 object-contain filter drop-shadow-md transition-transform group-hover:scale-105 -mr-2" />
                     <span className="text-2xl font-black text-gray-900 dark:text-white tracking-tight">Evora</span>
                 </Link>
                 <p className="text-gray-500 dark:text-gray-400 text-sm max-w-md mx-auto leading-relaxed">
