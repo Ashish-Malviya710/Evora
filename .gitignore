@@ -18,6 +18,10 @@ server/.env.local
 client/.env
 client/.env.local
 *.env
+*.env.example
+.env.example
+server/.env.example
+client/.env.example
 
 # 3. Build & Distribution Outputs
 dist/
