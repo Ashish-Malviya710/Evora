@@ -43,7 +43,7 @@ const Register = () => {
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}
             className="max-w-md mx-auto mt-12 bg-white dark:bg-dark-600 p-8 rounded-2xl shadow-xl border border-gray-100 dark:border-dark-400">
             <div className="text-center mb-8 flex flex-col items-center">
-                <img src="/logo.png" alt="Evora Logo" className="w-14 h-14 object-contain mb-3 drop-shadow" />
+                <img src="/logo.png" alt="Evora Logo" className="w-24 h-24 sm:w-28 sm:h-28 object-contain mb-3 drop-shadow-xl hover:scale-105 transition duration-300" />
                 <h2 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-1">Create an Account</h2>
                 <p className="text-gray-500 dark:text-gray-400 text-sm">Join Evora today as a User or Organizer</p>
             </div>

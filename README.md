@@ -1,4 +1,4 @@
-# <img src="client/public/logo.png" width="40" style="vertical-align: middle; display: inline-block;" /> Evora - AI-Powered MERN Event Booking Platform
+# <img src="client/public/logo.png" width="80" style="vertical-align: middle; display: inline-block;" /> Evora - AI-Powered MERN Event Booking Platform
 
 Evora is a modern, high-performance **MERN stack event booking & management platform** equipped with **Google Gemini AI**, real-time seat availability via **Socket.io**, digital **QR code ticket verification**, UPI payment proof submission workflows, and automated cron reminders.
 
